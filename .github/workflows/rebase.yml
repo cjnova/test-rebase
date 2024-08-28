@@ -31,7 +31,7 @@ jobs:
       run: git checkout main
 
     - name: Reset your main branch to match the upstream main
-      run: git reset --hard upstream/orig
+      run: git reset --hard upstream/main
 
     - name: Push changes
       run: |
