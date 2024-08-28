@@ -1,0 +1,38 @@
+name: Rebase Branch
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs every day at midnight
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  rebase:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        ref: main # Replace with your branch name
+
+    - name: Set up Git
+      run: |
+        git config --global user.name 'cjnova'
+        git config --global user.email 'cjnova@outlook.es'
+    - name: Add upstream remote
+      run: git remote add upstream https://github.com/Azure/ALZ-bicep.git # Replace with the original repository URL
+
+    - name: Fetch upstream
+      run: git fetch upstream
+
+    - name: Checkout main branch
+      run: git checkout main
+
+    - name: Reset your main branch to match the upstream main
+      run: git reset --hard upstream/main
+
+    - name: Push changes
+      run: |
+        git push origin main --force
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
